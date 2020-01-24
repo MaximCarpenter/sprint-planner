@@ -1,0 +1,11 @@
+D:\Projects\sprint-planner\Planner.Storage.Dapper\bin\Debug\Planner.Storage.Dapper.dll
+D:\Projects\sprint-planner\Planner.Storage.Dapper\bin\Debug\Planner.Storage.Dapper.pdb
+D:\Projects\sprint-planner\Planner.Storage.Dapper\bin\Debug\Dapper.dll
+D:\Projects\sprint-planner\Planner.Storage.Dapper\bin\Debug\Planner.Storage.dll
+D:\Projects\sprint-planner\Planner.Storage.Dapper\bin\Debug\Planner.Storage.pdb
+D:\Projects\sprint-planner\Planner.Storage.Dapper\bin\Debug\Dapper.xml
+D:\Projects\sprint-planner\Planner.Storage.Dapper\obj\Debug\Planner.Storage.Dapper.csprojAssemblyReference.cache
+D:\Projects\sprint-planner\Planner.Storage.Dapper\obj\Debug\Planner.Storage.Dapper.csproj.CoreCompileInputs.cache
+D:\Projects\sprint-planner\Planner.Storage.Dapper\obj\Debug\Planner.Storage.Dapper.csproj.CopyComplete
+D:\Projects\sprint-planner\Planner.Storage.Dapper\obj\Debug\Planner.Storage.Dapper.dll
+D:\Projects\sprint-planner\Planner.Storage.Dapper\obj\Debug\Planner.Storage.Dapper.pdb

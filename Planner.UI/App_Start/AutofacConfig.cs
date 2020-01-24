@@ -14,8 +14,8 @@ namespace Planner.App_Start
         {
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-            builder.RegisterType<TicketsRepositoryDapper>()
+            var connectionString = ConfigurationManager.ConnectionStrings["ConnectionStringMongo"].ConnectionString;
+            builder.RegisterType<TicketsRepositoryMongo>()
                 .As<IRepository<Ticket>>()
                 .WithParameters(new List<Parameter> {new NamedParameter("connection", connectionString) })
                 .InstancePerRequest(); 

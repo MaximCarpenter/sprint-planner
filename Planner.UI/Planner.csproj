@@ -353,6 +353,14 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Planner.Storage.Dapper\Planner.Storage.Dapper.csproj">
+      <Project>{494e5891-7fe2-43d0-b300-3da04550631e}</Project>
+      <Name>Planner.Storage.Dapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Planner.Storage.Mongo\Planner.Storage.Mongo.csproj">
+      <Project>{4f7ae65b-fb6b-420f-91a7-e771f6bbbc7b}</Project>
+      <Name>Planner.Storage.Mongo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Planner.Storage\Planner.Storage.csproj">
       <Project>{4f9041fb-3a15-4a2c-a6df-6f8134dd0688}</Project>
       <Name>Planner.Storage</Name>

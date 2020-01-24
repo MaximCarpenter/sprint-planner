@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner.Storage", "Planner.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner", "Planner.UI\Planner.csproj", "{6CD69C97-CC3F-4F31-8D77-7D075660BB10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner.Storage.Dapper", "Planner.Storage.Dapper\Planner.Storage.Dapper.csproj", "{494E5891-7FE2-43D0-B300-3DA04550631E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner.Storage.Mongo", "Planner.Storage.Mongo\Planner.Storage.Mongo.csproj", "{4F7AE65B-FB6B-420F-91A7-E771F6BBBC7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{6CD69C97-CC3F-4F31-8D77-7D075660BB10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CD69C97-CC3F-4F31-8D77-7D075660BB10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CD69C97-CC3F-4F31-8D77-7D075660BB10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{494E5891-7FE2-43D0-B300-3DA04550631E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{494E5891-7FE2-43D0-B300-3DA04550631E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{494E5891-7FE2-43D0-B300-3DA04550631E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{494E5891-7FE2-43D0-B300-3DA04550631E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F7AE65B-FB6B-420F-91A7-E771F6BBBC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F7AE65B-FB6B-420F-91A7-E771F6BBBC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F7AE65B-FB6B-420F-91A7-E771F6BBBC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F7AE65B-FB6B-420F-91A7-E771F6BBBC7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
