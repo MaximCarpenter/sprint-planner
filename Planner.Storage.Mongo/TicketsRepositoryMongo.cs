@@ -14,6 +14,7 @@ namespace Planner.Storage
         private string _dbName = "SprintPlanner";
         private string _table = "Tickets";
         private string _counters = "Counters";
+        private string _counterName = "ticketid";
         public TicketsRepositoryMongo(string connection)
         {
             _client = new MongoClient(connection);
@@ -29,13 +30,13 @@ namespace Planner.Storage
 
             _database.CreateCollection(_counters);
             var col = _database.GetCollection<BsonDocument>(_counters);
-            col.InsertOne(BsonDocument.Parse("{_id: \"ticketid\", sequence_value: 0}"));
+            col.InsertOne(BsonDocument.Parse($"{{_id: \"{_counterName}\", sequence_value: 0}}"));
         }
 
         private int GetNextSequence()
         {
             var col = _database.GetCollection<BsonDocument>(_counters);
-            var id = (int)col.FindOneAndUpdate(Builders<BsonDocument>.Filter.Eq("_id", "ticketid"),
+            var id = (int)col.FindOneAndUpdate(Builders<BsonDocument>.Filter.Eq("_id", _counterName),
                 Builders<BsonDocument>.Update.Inc("sequence_value", 1))?.GetValue("sequence_value");
             return id;
         }
@@ -50,16 +51,23 @@ namespace Planner.Storage
 
         public void Edit(Ticket item)
         {
-            var col = _database.GetCollection<BsonDocument>(_table);
+            var col = _database.GetCollection<Ticket>(_table);
+            var updateOption = new UpdateOptions { IsUpsert = true };
+            var update = Builders<Ticket>.Update
+                    .Set(it => it.Hrs, item.Hrs)
+                    .Set(it => it.Notes, item.Notes)
+                    .Set(it => it.PersonName, item.PersonName)
+                    .Set(it => it.SprintNr, item.SprintNr)
+                    .Set(it => it.TicketUrl, item.TicketUrl);
 
-            var bson = item.ToBsonDocument();
-            col.UpdateOne(Builders<BsonDocument>.Filter.Eq("_id", item.Id), bson);
+            var filter = Builders<Ticket>.Filter.Eq("Id", item.Id);
+            col.UpdateOne(filter, update, updateOption);
         }
 
         public void Delete(Ticket item)
         {
-            var col = _database.GetCollection<BsonDocument>(_table);
-            col.DeleteOne(Builders<BsonDocument>.Filter.Eq("_id", item.Id));
+            var col = _database.GetCollection<Ticket>(_table);
+            col.DeleteOne(Builders<Ticket>.Filter.Eq("Id", item.Id));
         }
 
         public IEnumerable<Ticket> GetAll()
@@ -70,13 +78,14 @@ namespace Planner.Storage
             {
                 while (cursor.MoveNext()) //Cursor maintain the batch size here.
                 {
-                    foreach (var doc in cursor.Current)////represent the current document in the cursor
+                    foreach (var doc in cursor.Current) ////represent the current document in the cursor
                     {
                         var myObj = BsonSerializer.Deserialize<Ticket>(doc);
                         tickets.Add(myObj);
                     }
                 }
             }
+
             return tickets;
         }
     }

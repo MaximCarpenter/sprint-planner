@@ -137,6 +137,7 @@ function AddRecord(item) {
         success: function (data) {
             item.Id = data;
             $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#gridContainer").dxDataGrid("instance").refresh();
         },
         error: function (xhr, textStatus, error) {
             $("#loadPanel").dxLoadPanel("instance").hide();
