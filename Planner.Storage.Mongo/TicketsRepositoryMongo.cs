@@ -64,10 +64,10 @@ namespace Planner.Storage
             col.UpdateOne(filter, update, updateOption);
         }
 
-        public void Delete(Ticket item)
+        public void Delete(int id)
         {
             var col = _database.GetCollection<Ticket>(_table);
-            col.DeleteOne(Builders<Ticket>.Filter.Eq("Id", item.Id));
+            col.DeleteOne(Builders<Ticket>.Filter.Eq("Id", id));
         }
 
         public IEnumerable<Ticket> GetAll()

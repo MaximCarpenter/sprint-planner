@@ -52,12 +52,12 @@ namespace Planner.Storage
             }
         }
 
-        public void Delete(Ticket item)
+        public void Delete(int id)
         {
             using (SqlConnection connection = new SqlConnection(_connection))
             {
                 connection.Open();
-                connection.Execute("Delete from Tickets Where Id = @Id", new { item.Id });
+                connection.Execute("Delete from Tickets Where Id = @Id", new { id });
                 connection.Close();
             }
         }

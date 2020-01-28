@@ -128,8 +128,8 @@ function AddRecord(item) {
     item.Id = 0;
     var request = JSON.stringify({ 'item': item });
     $.ajax({
-        url: "../Planner/Home/AddRecord",
-        type: 'POST',
+        url: "../planner/api/tickets",
+        type: 'post',
         async: false,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
@@ -151,8 +151,8 @@ function EditRecord(item) {
     ShowLoadingPanel();
     var request = JSON.stringify({ 'item': item });
     $.ajax({
-        url: "../Planner/Home/EditRecord",
-        type: 'POST',
+        url: "../planner/api/tickets",
+        type: 'put',
         async: false,
         data: request,
         // dataType: 'json',
@@ -169,12 +169,11 @@ function EditRecord(item) {
 
 function DeleteRecord(item) {
     ShowLoadingPanel();
-    var request = JSON.stringify({ 'item': item });
+
     $.ajax({
-        url: "../Planner/Home/DeleteRecord",
-        type: 'POST',
+        url: "../planner/api/tickets/" + item.Id,
+        type: 'delete',
         async: false,
-        data: request,
        // dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function (data) {
@@ -189,19 +188,14 @@ function DeleteRecord(item) {
 
 function GetRecords(success) {
     ShowLoadingPanel();
-    $.ajax({
-        url: "../Planner/Home/GetRecords",
-        type: 'POST',
-        async: false,
-        contentType: 'application/json',
-        success: function (data) {
+
+    $.get("../planner/api/tickets")
+        .done(function(data) {
             tickets = data;
             $("#loadPanel").dxLoadPanel("instance").hide();
             success();
-        },
-        error: function (xhr, textStatus, error) {
+        }).fail(function(xhr, textStatus, error) {
             $("#loadPanel").dxLoadPanel("instance").hide();
             DevExpress.ui.notify(error.toString(), "error");
-        }
-    });
+        });
 }

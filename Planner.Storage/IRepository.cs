@@ -6,7 +6,7 @@ namespace Planner.Storage
     {
         void Add(T item);
         void Edit(T item);
-        void Delete(T item);
+        void Delete(int item);
         IEnumerable<T> GetAll();
     }
 }
