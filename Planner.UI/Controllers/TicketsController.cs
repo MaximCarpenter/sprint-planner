@@ -26,14 +26,14 @@ namespace Planner.Controllers
         }
         
         [HttpPost]
-        public int Post([FromBody]Ticket item)
+        public int Post(Ticket item)
         {
             _repository.Add(item);
             return item.Id;
         }
 
         [HttpPut]
-        public void Put([FromBody]Ticket item)
+        public void Put(Ticket item)
         {
             _repository.Edit(item);
         }

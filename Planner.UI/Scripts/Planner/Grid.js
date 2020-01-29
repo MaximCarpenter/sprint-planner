@@ -123,19 +123,17 @@ function ShowLoadingPanel() {
     });
 }
 
-function AddRecord(item) {
+function AddRecord(Ticket) {
     ShowLoadingPanel();
-    item.Id = 0;
-    var request = JSON.stringify({ 'item': item });
+    Ticket.Id = 0;
     $.ajax({
         url: "../planner/api/tickets",
         type: 'post',
         async: false,
         dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: request,
+        data: Ticket,
         success: function (data) {
-            item.Id = data;
+            Ticket.Id = data;
             $("#loadPanel").dxLoadPanel("instance").hide();
             $("#gridContainer").dxDataGrid("instance").refresh();
         },
@@ -147,16 +145,14 @@ function AddRecord(item) {
 }
 
 
-function EditRecord(item) {
+function EditRecord(Ticket) {
     ShowLoadingPanel();
-    var request = JSON.stringify({ 'item': item });
     $.ajax({
         url: "../planner/api/tickets",
         type: 'put',
         async: false,
-        data: request,
-        // dataType: 'json',
-        contentType: "application/json; charset=utf-8",
+        data: Ticket,
+        dataType: 'json',
         success: function (data) {
             $("#loadPanel").dxLoadPanel("instance").hide();
         },
