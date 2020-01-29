@@ -10,17 +10,35 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/Scripts/DevExtremeBundle")
+    @Scripts.Render("~/Scripts/Planner/toolbar.js")
 
 </head>
 <body>
-    <div class="container body-content">
+<style>
+    #navigation {
+        width: 100%;
+    }
+    #content {
+        margin-top: 25px;
+        float: left;
+    }
+</style>
+<div class="container body-content">
+    <script>
+        $(function() {
+            InitNavBar();
+        });
+    </script>
+    <div id="navigation"></div>
+    <div id="content">
         @RenderBody()
-        <hr />
-        <footer>
-        </footer>
     </div>
-    
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <hr/>
+    <footer>
+    </footer>
+</div>
+
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </body>
 </html>
