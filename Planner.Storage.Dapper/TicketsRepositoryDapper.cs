@@ -10,7 +10,7 @@ namespace Planner.Storage
     BEGIN
 	    CREATE TABLE [dbo].Ticket(
 	    Id int NOT NULL IDENTITY PRIMARY KEY,
-	    SprintNr int NOT NULL,
+	    SprintId int NOT NULL,
 	    Hrs float NOT NULL,
 	    PersonName varchar (50) NOT NULL,
 	    TicketUrl varchar (200) NOT NULL,
@@ -32,9 +32,9 @@ namespace Planner.Storage
             {
                 connection.Open();
                 connection.Execute("Insert into " +
-                                   "Tickets (SprintNr, Hrs, PersonName, TicketUrl, Notes) " +
-                                   "values (@SprintNr, @Hrs, @PersonName, @TicketUrl, @Notes)",
-                    new {item.SprintNr, item.Hrs, item.PersonName, item.TicketUrl, item.Notes});
+                                   "Tickets (SprintId, Hrs, PersonName, TicketUrl, Notes) " +
+                                   "values (@SprintId, @Hrs, @PersonName, @TicketUrl, @Notes)",
+                    new {item.SprintId, item.Hrs, item.PersonName, item.TicketUrl, item.Notes});
                 connection.Close();
             }
         }
@@ -45,9 +45,9 @@ namespace Planner.Storage
             {
                 connection.Open();
                 connection.Execute("Update " +
-                                   "Tickets set SprintNr = @SprintNr, Hrs = @Hrs, PersonName = @PersonName, " +
+                                   "Tickets set SprintId = @SprintId, Hrs = @Hrs, PersonName = @PersonName, " +
                                    "TicketUrl = @TicketUrl, Notes = @Notes Where Id = @Id ",
-                    new { item.Id, item.SprintNr, item.Hrs, item.PersonName, item.TicketUrl, item.Notes });
+                    new { item.Id, item.SprintId, item.Hrs, item.PersonName, item.TicketUrl, item.Notes });
                 connection.Close();
             }
         }
@@ -68,7 +68,7 @@ namespace Planner.Storage
             using (var connection = new SqlConnection(_connection))
             {
                 connection.Open();
-                tickets = connection.Query<Ticket>("SELECT Id, SprintNr, Hrs," +
+                tickets = connection.Query<Ticket>("SELECT Id, SprintId, Hrs," +
                                                    "PersonName, TicketUrl, Notes FROM [Tickets]").ToList();
                 connection.Close();
             }

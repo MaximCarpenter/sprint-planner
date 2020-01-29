@@ -76,6 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SprintsRepositoryMongo.cs" />
+    <Compile Include="RepositoryMongoBase.cs" />
     <Compile Include="TicketsRepositoryMongo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,14 @@
 ﻿
 namespace Planner.Storage
 {
-    public class Ticket
+    public abstract class EntityBase
     {
         public int Id { get; set; }
-        public int SprintNr { get; set; }
+    }
+
+    public class Ticket: EntityBase
+    {
+        public int SprintId { get; set; }
         public double Hrs { get; set; }
         public string PersonName { get; set; }
         public string TicketUrl { get; set; }

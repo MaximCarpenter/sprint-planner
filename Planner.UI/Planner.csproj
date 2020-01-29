@@ -169,7 +169,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -286,6 +288,7 @@
     <Content Include="Scripts\globalize\message.min.js" />
     <Content Include="Scripts\globalize\number.js" />
     <Content Include="Scripts\globalize\number.min.js" />
+    <Content Include="Scripts\Planner\Sprints.js" />
     <Content Include="Scripts\Planner\toolbar.js" />
     <Content Include="Scripts\Planner\Grid.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -339,6 +342,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Sprints.cshtml" />
+    <Content Include="Views\Home\Members.cshtml" />
+    <Content Include="Views\Home\Chart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

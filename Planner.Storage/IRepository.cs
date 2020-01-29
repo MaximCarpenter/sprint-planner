@@ -2,7 +2,7 @@
 
 namespace Planner.Storage
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : EntityBase
     {
         void Add(T item);
         void Edit(T item);

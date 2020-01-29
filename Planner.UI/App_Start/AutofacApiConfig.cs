@@ -32,15 +32,29 @@ namespace Planner.App_Start
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             var connectionString = ConfigurationManager.ConnectionStrings["ConnectionStringMongo"].ConnectionString;
-            builder.RegisterType<TicketsRepositoryMongo>()
-                .As<IRepository<Ticket>>()
-                .WithParameters(new List<Parameter> {new NamedParameter("connection", connectionString)})
-                .InstancePerRequest();
+            RegisterTicketsRepository(builder, connectionString);
+            RegisterSprintsRepository(builder, connectionString);
 
             //Set the dependency resolver to be Autofac.  
             Container = builder.Build();
 
             return Container;
+        }
+
+        private static void RegisterSprintsRepository(ContainerBuilder builder, string connectionString)
+        {
+            builder.RegisterType<SprintsRepositoryMongo>()
+                .As<IRepository<Sprint>>()
+                .WithParameters(new List<Parameter> { new NamedParameter("connection", connectionString) })
+                .InstancePerRequest();
+        }
+
+        private static void RegisterTicketsRepository(ContainerBuilder builder, string connectionString)
+        {
+            builder.RegisterType<TicketsRepositoryMongo>()
+                .As<IRepository<Ticket>>()
+                .WithParameters(new List<Parameter> { new NamedParameter("connection", connectionString) })
+                .InstancePerRequest();
         }
     }
 }
