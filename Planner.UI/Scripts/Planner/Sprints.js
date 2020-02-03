@@ -56,6 +56,10 @@ function InitGrid() {
             {
                 dataField: "Comments",
                 visible: false
+            },
+            {
+                dataField: "Leeway",
+                visible: false
             }
         ],
     /*    summary: {
@@ -109,7 +113,16 @@ function InitGrid() {
                                     dateSerializationFormat: "yyyy-MM-dd"
                                 } 
                             },
-                            "Status"
+                            "Status",
+                            {
+                                dataField: "Leeway",
+                                caption: "Leeway(%%)",
+                                editorType: "dxNumberBox",
+                                editorOptions: {
+                                    min: 0,
+                                    max: 100
+                                } 
+                            }
                         ]
                     }
                 ]

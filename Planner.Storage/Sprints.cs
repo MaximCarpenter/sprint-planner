@@ -12,5 +12,6 @@ namespace Planner.Storage
 
         public int Nr { get; set; }
         public string Name { get; set; }
+        public double Leeway { get; set; }
     }
 }

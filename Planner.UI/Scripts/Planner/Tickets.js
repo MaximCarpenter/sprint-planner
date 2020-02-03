@@ -56,6 +56,33 @@ var ticketsDataSource = new DevExpress.data.DataSource({
     pageSize: 100
 });
 
+function LoadTicketsSources() {
+
+    var loadTickets = function () {
+        var promise = new Promise(function (resolve, reject) {
+            GetRecords(resolve);
+        });
+        return promise;
+    };
+    var loadSprints = function () {
+        var promise = new Promise(function (resolve, reject) {
+            GetSprints(resolve);
+        });
+        return promise;
+    };
+    var loadMembers = function () {
+        var promise = new Promise(function (resolve, reject) {
+            GetMembers(resolve);
+        });
+        return promise;
+    };
+
+    loadTickets()
+        .then(loadSprints)
+        .then(loadMembers)
+        .then(InitGrid);
+}
+
 function InitGrid() {
     selectedSprint = getCurrentSprint();
 
@@ -98,6 +125,8 @@ function InitGrid() {
                 caption: "Ticket",
                 cellTemplate: function (container, options) {
                     container.empty();
+                    if (options.value === null) return;
+
                     var textIndex = options.value.indexOf("APP-");
                     var text = options.value.substring(textIndex);
                     var link = $('<a>', { text: text, href: options.value, target: "_blank" });
@@ -129,7 +158,7 @@ function InitGrid() {
                 {
                     column: "Hrs",
                     summaryType: "sum",
-                    displayFormat: "Total: {0} (hrs) of 24 (hrs)",
+                    displayFormat: "Total: {0} (hrs) of " + CalculateLeewayHours() + " (hrs)",
                     showInGroupFooter: true
                 }
             ]
@@ -197,7 +226,34 @@ function InitGrid() {
             fileName: selectedSprint.Name,
             allowExportSelectedData: false
         },
-        onToolbarPreparing: function(e) {
+        onToolbarPreparing: function (e) {
+            e.toolbarOptions.items.unshift(
+                {
+                    location: "before",
+                    widget: "dxTextBox",
+                    options: {
+                        text: CalculateLeewayDays() + "",
+                        readOnly: true
+                    }
+                });
+            e.toolbarOptions.items.unshift(
+                {
+                    location: "before",
+                    widget: "dxTextBox",
+                    options: {
+                        text: "End: " + new Date(selectedSprint.End).toLocaleDateString(),
+                        readOnly: true
+                    }
+                });
+            e.toolbarOptions.items.unshift(
+                {
+                    location: "before",
+                    widget: "dxTextBox",
+                    options: {
+                        text: "Start: " + new Date(selectedSprint.Start).toLocaleDateString(),
+                        readOnly: true
+                    }
+                });
             e.toolbarOptions.items.unshift(
                 {
                     location: "before",
@@ -211,7 +267,8 @@ function InitGrid() {
                             selectedSprint = $.grep(sprints,
                                 function (val) { return val.Id === s.value; })[0];
 
-                            $("#gridContainer").dxDataGrid("instance").refresh(false);
+                            $("#gridContainer").dxDataGrid("instance").repaint();
+                            $("#gridContainer").dxDataGrid("instance").refresh();
                         }
                     }
                 });
@@ -221,7 +278,7 @@ function InitGrid() {
 }
 
 function getCurrentSprint() {
-    var today = new Date();
+    var today =getToday();
     var current = $.grep(sprints,
         function(val) {
             return new Date(val.Start) <= today && new Date(val.End) >= today;
@@ -343,4 +400,45 @@ function GetMembers(resolve) {
             $("#loadPanel").dxLoadPanel("instance").hide();
             DevExpress.ui.notify(error.toString(), "error");
         });
+}
+
+
+function CalculateLeewayDays() {
+    var today = getToday();
+    if (selectedSprint.Start === undefined) return 0;
+    if (new Date(selectedSprint.Start) > today)
+        return "Pending";
+
+    var end = new Date(selectedSprint.End);
+    var diff = Math.round((end - today) / (1000 * 60 * 60 * 24)) + 2;
+    if (diff < 0)
+        return "Expired";
+
+    return diff + " day(s) to end";
+}
+
+function CalculateLeewayHours() {
+    return 50;
+    console.log(selectedSprint);
+    if (selectedSprint.Start === undefined) return 0;
+    var start = new Date(selectedSprint.Start);
+    var end = new Date(selectedSprint.End);
+    var diff = Math.round((end - start) / (1000 * 60 * 60)) + 24;
+    var leeway = selectedSprint.Leeway * diff / 100;
+
+    var people = names.length;
+
+    if (people === 0)
+        return diff;
+    return (diff / people).toFixed(2);
+
+    //return (diff - leeway).toFixed(2);
+
+    //  return (diff - leeway).toFixed(2)/;
+}
+
+function getToday() {
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    return new Date(date);
 }

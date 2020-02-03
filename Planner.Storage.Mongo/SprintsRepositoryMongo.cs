@@ -20,6 +20,7 @@ namespace Planner.Storage
                 .Set(it => it.Comments, item.Comments)
                 .Set(it => it.Nr, item.Nr)
                 .Set(it => it.Status, item.Status)
+                .Set(it => it.Leeway, item.Leeway)
                 .Set(it => it.Name, item.Name);
         }
     }

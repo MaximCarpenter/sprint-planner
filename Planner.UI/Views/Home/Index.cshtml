@@ -7,32 +7,10 @@
         padding-bottom: 6px !important;
     }
 </style>
-<script src="~/Scripts/Planner/Grid.js"></script>
+<script src="~/Scripts/Planner/Tickets.js"></script>
 <script>
-    $(function() {
-        var loadTickets = function() {
-            var promise = new Promise(function(resolve, reject) {
-                GetRecords(resolve);
-            });
-            return promise;
-        };
-        var loadSprints = function() {
-            var promise = new Promise(function(resolve, reject) {
-                GetSprints(resolve);
-            });
-            return promise;
-        };
-        var loadMembers = function() {
-            var promise = new Promise(function(resolve, reject) {
-                GetMembers(resolve);
-            });
-            return promise;
-        };
-
-        loadTickets()
-            .then(loadSprints)
-            .then(loadMembers)
-            .then(InitGrid);
+    $(function () {
+        LoadTicketsSources();
     });
 </script>
 
