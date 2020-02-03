@@ -3,6 +3,8 @@ var names = [];
 var tickets = [];
 var sprints = [];
 var selectedSprint = { Id: 0, Name: "Sprint" };
+var skip = false;
+
 
 var ticketsDataSource = new DevExpress.data.DataSource({
     loadMode: "raw",
@@ -38,6 +40,8 @@ var ticketsDataSource = new DevExpress.data.DataSource({
             tickets[itemIndex].SprintId = values.SprintId;
         if (values.TicketUrl !== undefined)
             tickets[itemIndex].TicketUrl = values.TicketUrl;
+        if (values.Resolved !== undefined)
+            tickets[itemIndex].Resolved = values.Resolved;
         EditRecord(tickets[itemIndex]);
     },
     remove: function (key) {
@@ -151,6 +155,28 @@ function InitGrid() {
                     displayExpr: "Name",
                     valueExpr: "Id"
                 }
+            },
+            {
+                dataField: 'Resolved',
+                caption: 'Resolved',
+                cellTemplate: function (container, options) {
+                    container.empty();
+                    var key = options.key;
+                    $("<div id='resolved_" + key + "'>").appendTo(container);
+                    $("#resolved_" + key).dxCheckBox({
+                        value: options.value !== null,
+                        onValueChanged: function (e) {
+                            if (skip) {
+                                skip = false;
+                                return;
+                            }
+                            if (e.value)
+                                GenerateResolveDatePopup(key);
+                            else 
+                                ticketsDataSource.store().update(key, { Resolved: null });
+                        }
+                    }).dxCheckBox("instance");
+                }
             }
         ],
         summary: {
@@ -209,6 +235,16 @@ function InitGrid() {
                                     displayExpr: "Name",
                                     valueExpr: "Id"
                                 }
+                            },
+                            {
+                                dataField: "Resolved",
+                                caption: "Resolved",
+                                editorType: "dxDateBox",
+                                editorOptions: {
+                                    showClearButton: true,
+                                    displayFormat: "shortdate" ,
+                                    dateSerializationFormat: "yyyy-MM-dd"
+                                }  
                             },
                             {
                                 dataField: "Notes",
@@ -378,11 +414,11 @@ function GetSprints(resolve) {
     ShowLoadingPanel();
 
     $.get("../planner/api/sprints")
-        .done(function (data) {
+        .done(function(data) {
             sprints = data;
             $("#loadPanel").dxLoadPanel("instance").hide();
             resolve(resolve);
-        }).fail(function (xhr, textStatus, error) {
+        }).fail(function(xhr, textStatus, error) {
             $("#loadPanel").dxLoadPanel("instance").hide();
             DevExpress.ui.notify(error.toString(), "error");
         });
@@ -433,12 +469,65 @@ function CalculateLeewayHours() {
     return (diff / people).toFixed(2);
 
     //return (diff - leeway).toFixed(2);
-
-    //  return (diff - leeway).toFixed(2)/;
+    //return (diff - leeway).toFixed(2)/;
 }
 
 function getToday() {
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     return new Date(date);
+}
+
+function GenerateResolveDatePopup(id) {
+    var popup = null,
+        popupOptions = {
+            width: 300,
+            height: 250,
+            contentTemplate: function () {
+                return $("<span />")
+                    .append("<div style='height: 30px' class='dx-fieldset'>" +
+                        "<span>Resolve date</span>" +
+                        "<div id='date_" + id +"'></div>" +
+                        "<div style='padding-top: 20px; float:right;'><div id='submit' style='margin-right:15px'></div>" +
+                        "<div id='cancel'></div>" +
+                        "</div>");
+            },
+            showTitle: true,
+            title: "Resolve",
+            visible: true,
+            dragEnabled: true,
+            closeOnOutsideClick: false,
+            onHidden: function () { $("#popup").remove(); },
+            onShown: function () {
+                $("#date_" + id).dxDateBox({
+                    displayFormat: "shortdate",
+                    dateSerializationFormat: "yyyy-MM-dd"
+                });
+
+                $("#date_" + id).dxDateBox("instance").option("value", new Date().toISOString());
+
+                $('#submit').dxButton({
+                    text: 'Submit',
+                    type: 'success',
+                    onClick: function (e) {
+                        var date = $("#date_" + id).dxDateBox("instance").option("value");
+                        ticketsDataSource.store().update(id, { Resolved: date });
+                        popup.hide();
+                    }
+                });
+                $("#cancel").dxButton({
+                    text: "Cancel",
+                    onClick: function (e) {
+                        skip = true;
+                        $("#resolved_" + id).dxCheckBox("instance").option("value", false);
+                        popup.hide();
+                    }
+                });
+            }
+        };
+    var $popupContainer = $("<div />")
+        .attr("id", "popup")
+        .appendTo(document.body);
+    popup = $popupContainer.dxPopup(popupOptions).dxPopup("instance");
+    popup.show();
 }

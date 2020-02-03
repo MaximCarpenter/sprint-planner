@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Planner.Storage
 {
     public abstract class EntityBase
@@ -13,5 +15,6 @@ namespace Planner.Storage
         public int PersonId { get; set; }
         public string TicketUrl { get; set; }
         public string Notes { get; set; }
+        public DateTime? Resolved{ get; set; }
     }
 }

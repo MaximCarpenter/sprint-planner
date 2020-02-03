@@ -18,6 +18,7 @@ namespace Planner.Storage
                 .Set(it => it.Notes, item.Notes)
                 .Set(it => it.PersonId, item.PersonId)
                 .Set(it => it.SprintId, item.SprintId)
+                .Set(it => it.Resolved, item.Resolved)
                 .Set(it => it.TicketUrl, item.TicketUrl);
         }
     }
