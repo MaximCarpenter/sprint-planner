@@ -95,7 +95,15 @@ function InitGrid() {
             },
             {
                 dataField: "TicketUrl",
-                caption: "Ticket"
+                caption: "Ticket",
+                cellTemplate: function (container, options) {
+                    container.empty();
+                    var textIndex = options.value.indexOf("APP-");
+                    var text = options.value.substring(textIndex);
+                    var link = $('<a>', { text: text, href: options.value, target: "_blank" });
+                    container.append(link);
+                    return;
+                }
             },
             {
                 dataField: "Hrs",
@@ -214,10 +222,13 @@ function InitGrid() {
 
 function getCurrentSprint() {
     var today = new Date();
-    return $.grep(sprints,
+    var current = $.grep(sprints,
         function(val) {
             return new Date(val.Start) <= today && new Date(val.End) >= today;
         })[0];
+    if (current === undefined || current === null)
+        current = { Id: 0, Name: "Sprint" };
+    return current;
 }
 
 function ShowLoadingPanel() {
