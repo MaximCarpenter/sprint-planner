@@ -20,26 +20,16 @@ namespace Planner.Storage
         {
             _client = new MongoClient(connection);
             _database = _client.GetDatabase(_dbName);
-            AddCounter();
-        }
-
-        private void AddCounter()
-        {
-            var dbExists = _client.ListDatabases().ToList()
-                .Any(c => c?.ToString().Contains(_dbName) ?? false);
-            if (dbExists) return;
-
-            _database.CreateCollection(_counters);
-            var col = _database.GetCollection<BsonDocument>(_counters);
-            col.InsertOne(BsonDocument.Parse($"{{_id: \"{_counterName}\", sequence_value: 0}}"));
         }
 
         private int GetNextSequence()
         {
             var col = _database.GetCollection<BsonDocument>(_counters);
-            var id = (int)col.FindOneAndUpdate(Builders<BsonDocument>.Filter.Eq("_id", _counterName),
-                Builders<BsonDocument>.Update.Inc("sequence_value", 1))?.GetValue("sequence_value");
-            return id;
+            var id = (int?)col.FindOneAndUpdate(Builders<BsonDocument>.Filter.Eq("_id", _counterName),
+                Builders<BsonDocument>.Update.Inc("sequence_value", 1),
+                new FindOneAndUpdateOptions<BsonDocument> { IsUpsert = true})?
+                .GetValue("sequence_value");
+            return id ?? 0;
         }
 
         public void Add(T item)

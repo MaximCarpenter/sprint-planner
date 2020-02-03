@@ -5,8 +5,23 @@
 
 <script src="~/Scripts/Planner/Grid.js"></script>
 <script>
-    $(function () {
-        GetRecords(InitGrid);
+    $(function() {
+        var loadTickets = function() {
+            var promise = new Promise(function(resolve, reject) {
+                GetRecords(resolve);
+            });
+            return promise;
+        };
+        var loadSprints = function() {
+            var promise = new Promise(function(resolve, reject) {
+                GetSprints(resolve);
+            });
+            return promise;
+        };
+
+        loadTickets()
+            .then(loadSprints)
+            .then(InitGrid);
     });
 </script>
 

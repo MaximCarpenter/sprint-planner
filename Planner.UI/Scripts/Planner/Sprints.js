@@ -1,5 +1,10 @@
 ﻿
 var sprints = [];
+var statuses = [
+    { id: 0, name: "Current" },
+    { id: 1, name: "Completed" },
+    { id: 2, name: "Canceled" }
+];
 
 function InitGrid() {
     $("#gridContainer").dxDataGrid({
@@ -29,15 +34,24 @@ function InitGrid() {
             },
             {
                 dataField: "Start",
-                caption: "Start"
+                caption: "Start",
+                dataType: 'date',
+                displayFormat: "shortdate"
             },
             {
                 dataField: "End",
-                caption: "End"
+                caption: "End",
+                dataType: 'date',
+                displayFormat: "shortdate"
             },
             {
                 dataField: "Status",
-                caption: "Status"
+                caption: "Status",
+                lookup: {
+                    dataSource: statuses,
+                    displayExpr: "name",
+                    valueExpr: "id"
+                }
             },
             {
                 dataField: "Comments",
@@ -69,19 +83,36 @@ function InitGrid() {
                 }
             },
             form: {
-                items: [{
-                    itemType: "group",
-                    colCount: 2,
-                    colSpan: 2,
-                    items: ["Name", "Nr", "Start", "End"/*, {
-                        dataField: "Notes",
-                        editorType: "dxTextArea",
+                items: [
+                    {
+                        itemType: "group",
+                        colCount: 2,
                         colSpan: 2,
-                        editorOptions: {
-                            height: 100
-                        }
-                    }*/]
-                }]
+                        items: [
+                            "Name", {
+                                dataField: "Nr",
+                                editorType: "dxNumberBox"
+                            },
+                            {
+                                dataField: "Start",
+                                editorType: "dxDateBox",
+                                editorOptions: {
+                                    displayFormat: "shortdate" ,
+                                    dateSerializationFormat: "yyyy-MM-dd"
+                                } 
+                            },
+                            {
+                                dataField: "End",
+                                editorType: "dxDateBox",
+                                editorOptions: {
+                                    displayFormat: "shortdate",
+                                    dateSerializationFormat: "yyyy-MM-dd"
+                                } 
+                            },
+                            "Status"
+                        ]
+                    }
+                ]
             }
         },
         onRowInserted: function (e) {
