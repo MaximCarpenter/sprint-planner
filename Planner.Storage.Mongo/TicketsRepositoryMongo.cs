@@ -16,7 +16,7 @@ namespace Planner.Storage
             return Builders<Ticket>.Update
                 .Set(it => it.Hrs, item.Hrs)
                 .Set(it => it.Notes, item.Notes)
-                .Set(it => it.PersonName, item.PersonName)
+                .Set(it => it.PersonId, item.PersonId)
                 .Set(it => it.SprintId, item.SprintId)
                 .Set(it => it.TicketUrl, item.TicketUrl);
         }

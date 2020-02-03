@@ -34,6 +34,7 @@ namespace Planner.App_Start
             var connectionString = ConfigurationManager.ConnectionStrings["ConnectionStringMongo"].ConnectionString;
             RegisterTicketsRepository(builder, connectionString);
             RegisterSprintsRepository(builder, connectionString);
+            RegisterMembersRepository(builder, connectionString);
 
             //Set the dependency resolver to be Autofac.  
             Container = builder.Build();
@@ -53,6 +54,14 @@ namespace Planner.App_Start
         {
             builder.RegisterType<TicketsRepositoryMongo>()
                 .As<IRepository<Ticket>>()
+                .WithParameters(new List<Parameter> { new NamedParameter("connection", connectionString) })
+                .InstancePerRequest();
+        }
+
+        private static void RegisterMembersRepository(ContainerBuilder builder, string connectionString)
+        {
+            builder.RegisterType<MembersRepositoryMongo>()
+                .As<IRepository<Member>>()
                 .WithParameters(new List<Parameter> { new NamedParameter("connection", connectionString) })
                 .InstancePerRequest();
         }

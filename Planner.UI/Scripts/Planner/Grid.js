@@ -1,6 +1,5 @@
 ﻿
-var names = [{ PersonName: "Eugeniy" }, { PersonName: "Maksym" }, { PersonName: "Aleksey S" }, { PersonName: "Oleksii L" }];
-
+var names = [];
 var tickets = [];
 var sprints = [];
 var selectedSprint = { Id: 0, Name: "Sprint" };
@@ -33,8 +32,8 @@ var ticketsDataSource = new DevExpress.data.DataSource({
             tickets[itemIndex].Hrs = values.Hrs;
         if (values.Notes !== undefined)
             tickets[itemIndex].Notes = values.Notes;
-        if (values.PersonName !== undefined)
-            tickets[itemIndex].PersonName = values.PersonName;
+        if (values.PersonId !== undefined)
+            tickets[itemIndex].PersonId = values.PersonId;
         if (values.SprintId !== undefined)
             tickets[itemIndex].SprintId = values.SprintId;
         if (values.TicketUrl !== undefined)
@@ -84,13 +83,13 @@ function InitGrid() {
         },
         columns: [
             {
-                dataField: "PersonName",
+                dataField: "PersonId",
                 caption: "Name",
                 width: 125,
                 lookup: {
                     dataSource: names,
-                    displayExpr: "PersonName",
-                    valueExpr: "PersonName"
+                    displayExpr: "Name",
+                    valueExpr: "Id"
                 },
                 groupIndex: 0
             },
@@ -150,7 +149,17 @@ function InitGrid() {
                         colCount: 2,
                         colSpan: 2,
                         items: [
-                            "PersonName", "TicketUrl", {
+                            {
+                                dataField: "PersonId",
+                                caption: "Name",
+                                editorType: "dxSelectBox",
+                                editorOptions: {
+                                    items: names,
+                                    displayExpr: "Name",
+                                    valueExpr: "Id"
+                                }
+                            },
+                            "TicketUrl", {
                                 dataField: "Hrs",
                                 editorType: "dxNumberBox"
                             },
@@ -303,6 +312,20 @@ function GetSprints(resolve) {
     $.get("../planner/api/sprints")
         .done(function (data) {
             sprints = data;
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            resolve(resolve);
+        }).fail(function (xhr, textStatus, error) {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            DevExpress.ui.notify(error.toString(), "error");
+        });
+}
+
+function GetMembers(resolve) {
+    ShowLoadingPanel();
+
+    $.get("../planner/api/members")
+        .done(function (data) {
+            names = data;
             $("#loadPanel").dxLoadPanel("instance").hide();
             resolve(resolve);
         }).fail(function (xhr, textStatus, error) {

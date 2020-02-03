@@ -10,7 +10,7 @@ namespace Planner.Storage
     {
         public int SprintId { get; set; }
         public double Hrs { get; set; }
-        public string PersonName { get; set; }
+        public int PersonId { get; set; }
         public string TicketUrl { get; set; }
         public string Notes { get; set; }
     }

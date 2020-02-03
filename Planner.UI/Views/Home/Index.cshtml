@@ -18,9 +18,16 @@
             });
             return promise;
         };
+        var loadMembers = function() {
+            var promise = new Promise(function(resolve, reject) {
+                GetMembers(resolve);
+            });
+            return promise;
+        };
 
         loadTickets()
             .then(loadSprints)
+            .then(loadMembers)
             .then(InitGrid);
     });
 </script>

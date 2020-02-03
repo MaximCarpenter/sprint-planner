@@ -172,6 +172,7 @@
     <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SprintsController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -288,6 +289,7 @@
     <Content Include="Scripts\globalize\message.min.js" />
     <Content Include="Scripts\globalize\number.js" />
     <Content Include="Scripts\globalize\number.min.js" />
+    <Content Include="Scripts\Planner\Members.js" />
     <Content Include="Scripts\Planner\Sprints.js" />
     <Content Include="Scripts\Planner\toolbar.js" />
     <Content Include="Scripts\Planner\Grid.js" />
